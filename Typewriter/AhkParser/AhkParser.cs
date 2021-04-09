@@ -34,6 +34,9 @@ namespace Typewriter.AhkParser
             }
             catch (Exception e)
             {
+                Console.WriteLine(_A);
+                Console.Write(new String(' ', _ii));
+                Console.Write('^');
                 throw new ArgumentException($"Parsing exception at position {_ii}", e);
             }
         }

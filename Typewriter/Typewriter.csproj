@@ -46,6 +46,7 @@
         <Compile Include="AhkParser\KeyMaps\SingleCharMap.cs" />
         <Compile Include="AhkParser\Sequence.cs" />
         <Compile Include="Extensions.cs" />
+        <Compile Include="HelpMessage.cs" />
         <Compile Include="Interception\Helpers\HelperFunctions.cs" />
         <Compile Include="Interception\Helpers\KeyNameHelper.cs" />
         <Compile Include="Interception\Lib\ManagedWrapper.cs" />

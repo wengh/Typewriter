@@ -24,17 +24,21 @@ namespace Typewriter
         {
             try
             {
-                // EchoInput()
+                // Console.WriteLine(args);
                 var sequence = AhkParser.AhkParser.Parse(args);
+                if (sequence.Count == 0)
+                {
+                    HelpMessage.PrintHelpMessage();
+                    EchoInput();
+                    return;
+                }
 
                 if (TryFindKeyboardDeviceId(out int device))
                 {
                     foreach (var action in sequence)
                     {
                         if (ProcessSpecialAction(action))
-                        {
                             continue;
-                        }
 
                         var stroke = action.ToStroke();
                         ManagedWrapper.Send(context, device, ref stroke, 1);
@@ -75,12 +79,19 @@ namespace Typewriter
             ManagedWrapper.SetFilter(context, ManagedWrapper.IsKeyboard, ManagedWrapper.Filter.All);
         }
 
+        private void InterceptorFinish()
+        {
+            ManagedWrapper.DestroyContext(context);
+        }
+
         private void EchoInput()
         {
+            Console.WriteLine("Echo mode activated. Press Ctrl-C to exit.");
+            Console.WriteLine("code\tstate\tname");
             InterceptorInit();
-            while (true)
+            try
             {
-                try
+                while (true)
                 {
                     int device;
                     var stroke = new ManagedWrapper.Stroke();
@@ -92,9 +103,7 @@ namespace Typewriter
                             if ((stroke.key.state & 2) != 0)
                                 scancode += 256;
 
-                            Console.WriteLine($"{device}\t"
-                                            + $"{stroke.key.code}\t"
-                                            + $"{stroke.key.information}\t"
+                            Console.WriteLine($"{stroke.key.code}\t"
                                             + $"{(ManagedWrapper.KeyState) stroke.key.state}\t"
                                             + $"{KeyNameHelper.GetNameFromScanCode(scancode)}");
 
@@ -102,16 +111,11 @@ namespace Typewriter
                         }
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(e);
-                }
             }
-        }
-
-        private void InterceptorFinish()
-        {
-            ManagedWrapper.DestroyContext(context);
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+            }
         }
 
         private bool TryFindKeyboardDeviceId(out int deviceId)
@@ -138,10 +142,11 @@ namespace Typewriter
         {
             string exe = Environment.GetCommandLineArgs()[0];
             string rawCmd = Environment.CommandLine;
-            string argsOnly = rawCmd.Remove(rawCmd.IndexOf(exe, StringComparison.Ordinal), exe.Length).TrimStart('"');
-
-            if (argsOnly.StartsWith(" ", StringComparison.Ordinal))
-                argsOnly = argsOnly.Substring(1);
+            string argsOnly = rawCmd.Remove(rawCmd.IndexOf(exe, StringComparison.Ordinal), exe.Length).TrimStart('"').Trim(' ');
+            if (argsOnly.StartsWith("\"") && argsOnly.EndsWith("\""))
+            {
+                argsOnly = argsOnly.Substring(1, argsOnly.Length - 2);
+            }
 
             return argsOnly;
         }

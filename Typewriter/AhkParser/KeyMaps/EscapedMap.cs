@@ -22,8 +22,8 @@ namespace Typewriter.AhkParser.KeyMaps
             if (s.StartsWith("i") && int.TryParse(s.Substring(1), out int intervalMs))
                 return new KeyAction(K.Interval, (UpDown) intervalMs);
 
-            if (Enum.TryParse(s, out K key))
-                return key;
+            // if (Enum.TryParse(s, out K key))
+            //     return key;
 
             throw new ArgumentException($"Escaped key {{{s}}} is invalid");
         }
@@ -77,7 +77,7 @@ namespace Typewriter.AhkParser.KeyMaps
             k["F23"] = K.F23;
             k["F24"] = K.F24;
 
-            k["Enter"] = K.Enter;
+            k["Enter"] = k["Return"] = K.Enter;
             k["Escape"] = k["Esc"] = K.Esc;
             k["Space"] = K.Space;
             k["Tab"] = K.Tab;
@@ -107,7 +107,7 @@ namespace Typewriter.AhkParser.KeyMaps
             k["RShift"] = K.RightShift;
             k["LWin"] = K.LeftWin;
             k["RWin"] = K.RightWin;
-            k["Menu"] = K.Menu;
+            k["AppsKey"] = k["Menu"] = K.Menu;
             // k["Sleep"] = K.Sleep;
 
             k["Numpad0"] = K.Num0;

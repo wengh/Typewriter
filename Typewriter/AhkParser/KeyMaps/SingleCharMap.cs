@@ -7,7 +7,7 @@ namespace Typewriter.AhkParser.KeyMaps
         public static Sequence Get(char c)
         {
             if (c >= 128 || k[c] == null)
-                throw new ArgumentException($"Character '{c}' has no corresponding sequence");
+                throw new ArgumentException($"Character '{c}' has no corresponding key sequence");
 
             return k[c].Clone();
         }

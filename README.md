@@ -27,7 +27,7 @@ Note:
 
 Examples:
 
-    typewriter ""^+{Esc}""
+    typewriter "^+{Esc}"
         Send Ctrl-Shift+Esc to open Task Manager
         Double quotes are used to escape ^ character
 

@@ -8,14 +8,14 @@ namespace Typewriter.AhkParser
     {
         private string _A;
         private int _ii;
-        private Sequence _sequence = new();
+        private Sequence _result = new();
         private Stack<K> _modifiers = new();
 
         public static Sequence Parse(string str)
         {
             var parser = new AhkParser(str);
             parser.ParseAll();
-            return parser._sequence;
+            return parser._result;
         }
 
         private AhkParser(string str)
@@ -43,7 +43,7 @@ namespace Typewriter.AhkParser
 
         private void Add(Sequence sequence)
         {
-            _sequence.AddRange(sequence);
+            _result.AddRange(sequence);
         }
 
         private void ParseUnit()

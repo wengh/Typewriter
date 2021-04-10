@@ -10,11 +10,12 @@ using Typewriter.AhkParser;
 
 namespace Typewriter
 {
-    internal class Program
+    internal class Program : IDisposable
     {
         private static void Main()
         {
-            new Program().Run(GetRawArgsWithoutExe());
+            using var program = new Program();
+            program.Run(GetRawArgsWithoutExe());
         }
 
         private IntPtr context = ManagedWrapper.CreateContext();
@@ -22,37 +23,30 @@ namespace Typewriter
 
         private void Run(string args)
         {
-            try
+            // Console.WriteLine(args);
+            var sequence = AhkParser.AhkParser.Parse(args);
+            if (sequence.Count == 0)
             {
-                // Console.WriteLine(args);
-                var sequence = AhkParser.AhkParser.Parse(args);
-                if (sequence.Count == 0)
-                {
-                    HelpMessage.PrintHelpMessage();
-                    EchoInput();
-                    return;
-                }
+                HelpMessage.PrintHelpMessage();
+                EchoInput();
+                return;
+            }
 
-                if (TryFindKeyboardDeviceId(out int device))
+            if (TryFindKeyboardDeviceId(out int device))
+            {
+                foreach (var action in sequence)
                 {
-                    foreach (var action in sequence)
-                    {
-                        if (ProcessSpecialAction(action))
-                            continue;
+                    if (ProcessSpecialAction(action))
+                        continue;
 
-                        var stroke = action.ToStroke();
-                        ManagedWrapper.Send(context, device, ref stroke, 1);
-                        Thread.Sleep(interval);
-                    }
-                }
-                else
-                {
-                    throw new Exception("No keyboard found");
+                    var stroke = action.ToStroke();
+                    ManagedWrapper.Send(context, device, ref stroke, 1);
+                    Thread.Sleep(interval);
                 }
             }
-            finally
+            else
             {
-                InterceptorFinish();
+                throw new Exception("No keyboard found");
             }
         }
 
@@ -74,21 +68,12 @@ namespace Typewriter
             return true;
         }
 
-        private void InterceptorInit()
-        {
-            ManagedWrapper.SetFilter(context, ManagedWrapper.IsKeyboard, ManagedWrapper.Filter.All);
-        }
-
-        private void InterceptorFinish()
-        {
-            ManagedWrapper.DestroyContext(context);
-        }
-
         private void EchoInput()
         {
             Console.WriteLine("Echo mode activated. Press Ctrl-C to exit.");
             Console.WriteLine("code\tstate\tname");
-            InterceptorInit();
+
+            ManagedWrapper.SetFilter(context, ManagedWrapper.IsKeyboard, ManagedWrapper.Filter.All);
             try
             {
                 while (true)
@@ -149,6 +134,22 @@ namespace Typewriter
             }
 
             return argsOnly;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            ManagedWrapper.DestroyContext(context);
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
+        }
+
+        ~Program()
+        {
+            ReleaseUnmanagedResources();
         }
     }
 }

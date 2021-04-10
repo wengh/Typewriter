@@ -27,11 +27,5 @@ namespace Typewriter
 
             return stroke;
         }
-
-        public static ManagedWrapper.Stroke Down(this ManagedWrapper.Stroke stroke)
-        {
-            stroke.key.state |= 1;
-            return stroke;
-        }
     }
 }

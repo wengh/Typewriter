@@ -24,14 +24,14 @@ namespace Typewriter
         private void Run(string args)
         {
             // Console.WriteLine(args);
-            var sequence = AhkParser.AhkParser.Parse(args);
-            if (sequence.Count == 0)
+            if (args == "")
             {
                 HelpMessage.PrintHelpMessage();
                 EchoInput();
                 return;
             }
 
+            var sequence = AhkParser.AhkParser.Parse(args);
             if (TryFindKeyboardDeviceId(out int device))
             {
                 foreach (var action in sequence)

@@ -9,11 +9,6 @@ namespace Core_Interception.Lib
 {
     public static class ManagedWrapper
     {
-        public class Foo
-        {
-            public int Bar { get; set; }
-        }
-
         #region Imports
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int Predicate(int device);

@@ -1,3 +1,5 @@
+Note: [Interception driver](https://github.com/oblitum/Interception) is required for running Typewriter.
+
 ```
 Emulate keyboard strokes through Interception driver.
 

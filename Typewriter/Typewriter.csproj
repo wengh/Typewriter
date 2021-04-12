@@ -50,6 +50,7 @@
         <Compile Include="Interception\Helpers\HelperFunctions.cs" />
         <Compile Include="Interception\Helpers\KeyNameHelper.cs" />
         <Compile Include="Interception\Lib\ManagedWrapper.cs" />
+        <Compile Include="Interception\Lib\MultimediaTimer.cs" />
         <Compile Include="K.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

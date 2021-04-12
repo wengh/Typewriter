@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core_Interception.Helpers;
 using Core_Interception.Lib;
+using HighPrecisionTimer;
 using Typewriter.AhkParser;
 
 namespace Typewriter
@@ -41,7 +40,7 @@ namespace Typewriter
 
                     var stroke = action.ToStroke();
                     ManagedWrapper.Send(context, device, ref stroke, 1);
-                    Thread.Sleep(interval);
+                    Delay(interval);
                 }
             }
             else
@@ -61,7 +60,7 @@ namespace Typewriter
                     interval = (int) action.UpDown;
                     break;
                 case K.Sleep:
-                    Thread.Sleep((int) action.UpDown);
+                    Delay((int) action.UpDown);
                     break;
             }
 
@@ -135,6 +134,12 @@ namespace Typewriter
 
             return argsOnly;
         }
+
+        private static void Delay(int ms)
+        {
+            MultimediaTimer.Delay(ms).Wait();
+        }
+
 
         private void ReleaseUnmanagedResources()
         {

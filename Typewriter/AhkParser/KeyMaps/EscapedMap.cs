@@ -13,13 +13,13 @@ namespace Typewriter.AhkParser.KeyMaps
             if (s.Length == 1)
                 return SingleCharMap.Get(s[0]);
 
-            if (s.StartsWith("sc") && int.TryParse(s.Substring(2), out int code))
+            if (s.StartsWith("sc") && uint.TryParse(s.Substring(2), out uint code))
                 return (K) code;
 
-            if (s.StartsWith("s") && int.TryParse(s.Substring(1), out int sleepMs))
+            if (s.StartsWith("s") && uint.TryParse(s.Substring(1), out uint sleepMs))
                 return new KeyAction(K.Sleep, (UpDown) sleepMs);
 
-            if (s.StartsWith("i") && int.TryParse(s.Substring(1), out int intervalMs))
+            if (s.StartsWith("i") && uint.TryParse(s.Substring(1), out uint intervalMs))
                 return new KeyAction(K.Interval, (UpDown) intervalMs);
 
             // if (Enum.TryParse(s, out K key))

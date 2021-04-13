@@ -22,6 +22,7 @@ Features not present in AHK:
     {i<n>}   set the interval between two strokes to n ms
              default interval is 10 ms
     {sc<x>}  send key with custom scancode
+             (not the same scancodes as in AHK!)
 
 Note:
     A connected keyboard is required.

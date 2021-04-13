@@ -16,13 +16,14 @@ Usage:
 For details about the AHK syntax, see:
     https://www.autohotkey.com/docs/commands/Send.htm
 
-Unsupported strokes:
+Unsupported AHK features:
     {Browser_Back} and similar multimedia keys
     {Click}, {LButton} and other mouse strokes
     {Blind}, {Raw}, {Text}
     {ASC nnnnn}, {U+nnnn}, {vkXX}, {vkXXscYYY}
 
-Special strokes:
+Features not present in AHK:
+    }        equivalent to ^ but doesn't have to be escaped
     {s<n>}   sleep for n ms
     {i<n>}   set the interval between two strokes to n ms
              default interval is 10 ms
@@ -35,7 +36,8 @@ Note:
 
 Examples:
 
-    typewriter ""^+{Esc}""
+    typewriter ""^+{Esc}""      OR
+    typewriter }+{Esc}
         Send Ctrl-Shift+Esc to open Task Manager
         Double quotes are used to escape ^ character
 

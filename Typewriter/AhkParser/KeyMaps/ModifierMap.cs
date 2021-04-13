@@ -7,10 +7,11 @@
             key = c switch
             {
                 '^' => K.Ctrl,
+                '}' => K.Ctrl,
                 '+' => K.Shift,
                 '!' => K.Alt,
                 '#' => K.LeftWin,
-                _ => default,
+                _   => default,
             };
             return key != default;
         }

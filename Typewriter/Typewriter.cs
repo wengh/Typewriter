@@ -87,7 +87,7 @@ namespace Typewriter
 
         private bool TryFindKeyboardDeviceId(out int deviceId)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 1; i <= 20; i++)
             {
                 if (ManagedWrapper.IsKeyboard(i) <= 0)
                     continue;
